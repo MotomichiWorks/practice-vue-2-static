@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta charset="utf-8">
+<title></title>
+<meta name="description" content="">
+<meta name="author" content="">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="css/style.css">
+<link rel="shortcut icon" href="">
+</head>
+<body>
+<div id="vue-app">
+
+
+
+  <h1>Vue.jsの練習 静的なページ</h1>
+  <div>
+    <section>
+      <h2>{{CONST.base.title}}</h2>
+      <fieldset id="category-select">
+        <legend>
+          {{CONST.base.categorySelect.title}}
+        </legend>
+        <div>
+          <input name="base__category-select" id="base__category-select__0" type="radio" v-on:change="baseCategorySelectRiceAndBread">
+          <label for="base__category-select__0">ごはんとパン両方</label>
+        </div>
+        <div>
+          <input name="base__category-select" id="base__category-select__1" type="radio" v-on:change="baseCategorySelectRiceOnly">
+          <label for="base__category-select__1">ごはんのみ</label>
+        </div>
+        <div>
+          <input name="base__category-select" id="base__category-select__2" type="radio" v-on:change="baseCategorySelectBreadOnly">
+          <label for="base__category-select__2">パンのみ</label>
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>
+          {{CONST.base.checkboxObj.title}}
+        </legend>
+        <div>
+          <input type="checkbox" name="base__checkbox-obj" value="base__checkbox-obj-0" v-on:change="baseCheckboxChanged">
+          <input type="checkbox" name="base__checkbox-obj" value="base__checkbox-obj-1" v-on:change="baseCheckboxChanged">
+          <input type="checkbox" name="base__checkbox-obj" value="base__checkbox-obj-2" v-on:change="baseCheckboxChanged">
+        </div>
+      </fieldset>
+    </section>
+  </div>
+
+
+
+  <div v-if="state.rice.isShow">
+    <section>
+      <h2>{{CONST.rice.title}}</h2>
+      <fieldset>
+        <legend>
+          {{CONST.base.categorySelect.title}}
+        </legend>
+        <div>
+          <select name="rice__menu-select" v-on:change="riceMenuSelectHousehold">
+            <option value="家庭用カレーライス0">家庭用カレーライス0</option>
+            <option value="家庭用カレーライス1">家庭用カレーライス1</option>
+            <option value="家庭用カレーライス2">家庭用カレーライス2</option>
+            <option value="家庭用カレーライス3">家庭用カレーライス3</option>
+          </select>
+        </div>
+        <div>
+          <select name="rice__menu-select" v-on:change="riceMenuSelectBiz">
+            <option value="業務用カレーライス0">業務用カレーライス0</option>
+            <option value="業務用カレーライス1">業務用カレーライス1</option>
+            <option value="業務用カレーライス2">業務用カレーライス2</option>
+            <option value="業務用カレーライス3">業務用カレーライス3</option>
+          </select>
+        </div>
+      </fieldset>
+    </section>
+  </div>
+
+
+
+  <div v-if="state.bread.isShow">
+    <section>
+      <h2>{{CONST.bread.title}}</h2>
+      <fieldset>
+        <legend>
+          {{CONST.base.categorySelect.title}}
+        </legend>
+        <div>
+          <select name="bread__menu-select" v-on:change="breadMenuSelectHousehold">
+            <option value="家庭用バゲット0">家庭用バゲット0</option>
+            <option value="家庭用バゲット1">家庭用バゲット1</option>
+            <option value="家庭用バゲット2">家庭用バゲット2</option>
+            <option value="家庭用バゲット3">家庭用バゲット3</option>
+          </select>
+        </div>
+        <div>
+          <select name="bread__menu-select" v-on:change="breadMenuSelectBiz">
+            <option value="業務用バゲット0">業務用バゲット0</option>
+            <option value="業務用バゲット1">業務用バゲット1</option>
+            <option value="業務用バゲット2">業務用バゲット2</option>
+            <option value="業務用バゲット3">業務用バゲット3</option>
+          </select>
+        </div>
+      </fieldset>
+    </section>
+  </div>
+
+
+
+<!--/#vue-app--></div>
+<script src="js/vue.js"></script>
+<script src="js/vue-app.js?ver=0"></script>
+</body>
+</html>
