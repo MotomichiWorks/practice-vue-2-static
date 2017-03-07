@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta charset="utf-8">
+<title></title>
+<meta name="description" content="">
+<meta name="author" content="">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="css/style.css">
+<link rel="shortcut icon" href="">
+</head>
+<body>
+
+
+
+<div id="sort-app">
+  <h1>Vue.jsの練習 静的なページ</h1>
+  <nav>
+    <div><button v-on:click="sort('id')">id順に並べ替え</a></button>
+    <div><button v-on:click="sort('rice_and_bread')">ごはんとパンの合計価格順に並べ替え</a></button>
+    <div><button v-on:click="sort('rice_only')">ごはんの価格順に並べ替え</button></div>
+    <div><button v-on:click="sort('bread_only')">パンの価格順に並べ替え</button></div>
+  </nav>
+  <ul>
+    <li>
+      【{{state.items[0].name}}】 id:{{state.items[0].id}} 合計額：{{state.items[0].priceRiceAndBread}}円 ごはん:{{state.items[0].priceRice}}円 パン:{{state.items[0].priceBread}}円
+    </li>
+  </ul>
+  <button v-on:click="showSecondaryItems">
+    もっと見る
+  </button>
+  <ul v-if="!state.secondaryItems.isDisabled">
+    <li v-for="item in getSecondaryItems(state.items)">
+      【{{item.name}}】 id:{{item.id}} 合計額：{{item.priceRiceAndBread}}円 ごはん:{{item.priceRice}}円 パン:{{item.priceBread}}円
+    </li>
+  </ul>
+<!--/#sort-app--></div>
+
+<script src="js/vue.js"></script>
+<script>
+  var sortApp = new Vue({
+    el: '#sort-app',
+    data: {
+      state: {
+        secondaryItems: {
+          isDisabled: true,
+        },
+        items: [
+          {name: 'セット商品0', id: 0, priceRiceAndBread: 410, priceRice: 110, priceBread: 300},
+          {name: 'セット商品1', id: 1, priceRiceAndBread: 550, priceRice: 350, priceBread: 210},
+          {name: 'セット商品2', id: 2, priceRiceAndBread: 380, priceRice: 180, priceBread: 200},
+          {name: 'セット商品3', id: 3, priceRiceAndBread: 610, priceRice: 200, priceBread: 410},
+          {name: 'セット商品4', id: 4, priceRiceAndBread: 440, priceRice: 320, priceBread: 120},
+        ],
+      },
+    },
+    methods: {
+      sort: function(action_type){
+        switch (action_type) {
+          case 'id':
+            this.state.items.sort(function(a,b){
+              if(a.id < b.id) return -1;
+              if(a.id > b.id) return 1;
+              return 0;
+            });
+            break;
+          case 'rice_and_bread':
+            this.state.items.sort(function(a,b){
+              if(a.priceRiceAndBread < b.priceRiceAndBread) return -1;
+              if(a.priceRiceAndBread > b.priceRiceAndBread) return 1;
+              return 0;
+            });
+            break;
+          case 'rice_only':
+            this.state.items.sort(function(a,b){
+              if(a.priceRice < b.priceRice) return -1;
+              if(a.priceRice > b.priceRice) return 1;
+              return 0;
+            });
+            break;
+          case 'bread_only':
+            this.state.items.sort(function(a,b){
+              if(a.priceBread < b.priceBread) return -1;
+              if(a.priceBread > b.priceBread) return 1;
+              return 0;
+            });
+            break;
+          default:
+        };
+      },
+      getSecondaryItems: function(items){
+        return items.filter(function (item, index) {
+          return (0 < index);
+        });
+      },
+      showSecondaryItems: function() {
+        this.state.secondaryItems.isDisabled = !this.state.secondaryItems.isDisabled;
+      },
+    },
+  });
+</script>
+
+</body>
+</html>

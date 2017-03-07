@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta charset="utf-8">
+<title></title>
+<meta name="description" content="">
+<meta name="author" content="">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="css/style.css">
+<link rel="shortcut icon" href="">
+</head>
+<body>
+
+<style>
+.accordion{}
+.accordion__trigger{}
+.accordion__content-outer-wrap{
+  transition: max-height 2s;
+  max-height: 0;
+  overflow: hidden;
+  background: #eeeeff;
+}
+.accordion__content-inner-wrap{
+  padding: 100px 10px;
+}
+</style>
+
+<div id="accordion-app">
+  <ul>
+    <li class="accordion" v-for="(item, index) in state.items">
+      <button class="accordion__trigger" v-on:click="slideToggle(index)">
+        accordion-trigger-{{index}}
+      </button>
+      <div class="accordion__content-outer-wrap" v-bind:style="{ maxHeight: state.items[index].maxHeight + 'px' }">
+        <my-component ref="refElm" class="accordion__content-inner-wrap" v-bind:accordion-contents="item.accordionContents" />
+      </div>
+    </li>
+  </ul>
+</div>
+
+<script type="text/x-template" id="accordion-contents">
+  <div>
+    {{accordionContents.title}}<br>
+    {{accordionContents.lead}}
+  </div>
+</script>
+
+<script src="js/vue.js"></script>
+<script>
+  window.items = [
+    {accordionContents: {title: 'content-0', lead: 'lead-0',}},
+    {accordionContents: {title: 'content-1', lead: 'lead-1',}},
+  ];
+
+  for(var i = 0; i < window.items.length; i++ ){
+    window.items[i].isActive = false;
+    window.items[i].maxHeight = 0;
+  }
+
+  var vueApp = new Vue({
+    el: '#accordion-app',
+    data: {
+      state: {
+        items: window.items,
+      },
+    },
+    components: {
+      'my-component': {
+        props: [
+          'accordionContents',
+        ],
+        template: '#accordion-contents',
+      },
+    },
+    methods: {
+      slideToggle: function(index){
+        console.log(index);
+        console.log(this.$refs);
+        this.state.items[index].isActive = !this.state.items[index].isActive;
+        if(this.state.items[index].isActive){
+          this.state.items[index].maxHeight = this.$refs.refElm[index].$el.clientHeight;
+        }else{
+          this.state.items[index].maxHeight = 0;
+        }
+      },
+    },
+  });
+</script>
+
+</body>
+</html>

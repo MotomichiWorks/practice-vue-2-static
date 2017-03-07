@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta charset="utf-8">
+<title></title>
+<meta name="description" content="">
+<meta name="author" content="">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="css/style.css">
+<link rel="shortcut icon" href="">
+</head>
+<body>
+
+<div id="filter-app">
+  <input type="text" v-model="message">
+  <div>{{message | reverse}}</div>
+<!--/#filter-app--></div>
+
+<script src="js/vue.js"></script>
+<script>
+var filterApp = new Vue({
+  el: '#filter-app',
+  data: {
+    message: 'message',
+  },
+  filters: {
+    reverse: function(value) {
+      console.log(value);
+      return value.split('').reverse().join('');
+    }
+  }
+});
+</script>
+
+</body>
+</html>
