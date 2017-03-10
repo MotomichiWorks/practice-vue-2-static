@@ -15,27 +15,27 @@
 <style>
 .accordion{}
 .accordion__trigger{}
-.accordion__content-outer-wrap{
+.accordion__contents-outer-wrap{
   transition: max-height 2s;
   max-height: 0;
   overflow: hidden;
   background: #eeeeff;
 }
-.accordion__content-inner-wrap{
+.accordion__contents-inner-wrap{
   padding: 100px 10px;
 }
 </style>
 
 <div id="accordion-app">
   <ul>
-    <li class="accordion" v-for="(item, index) in state.items">
+    <li class="accordion" v-for="(item, index) in items">
       <button class="accordion__trigger" v-on:click="slideToggle(index)">
         accordion-trigger-{{index}}
       </button>
-      <div class="accordion__content-outer-wrap" v-bind:style="{ maxHeight: state.items[index].maxHeight + 'px' }">
-        <div class="accordion__content-inner-wrap" ref="refElm">
-          {{item.accordionContents.title}}<br>
-          {{item.accordionContents.lead}}
+      <div class="accordion__contents-outer-wrap" v-bind:style="{ maxHeight: items[index].contents.maxHeight + 'px' }">
+        <div class="accordion__contents-inner-wrap" ref="contentsInner">
+          {{item.title}}<br>
+          {{item.contents.lead}}
         </div>
       </div>
     </li>
@@ -45,29 +45,36 @@
 <script src="js/vue.js"></script>
 <script>
   var items = [
-    {accordionContents: {title: 'content-0', lead: 'lead-0',}},
-    {accordionContents: {title: 'content-1', lead: 'lead-1',}},
+    {
+      title: 'content-0',
+      contents: {
+        lead: 'lead-0',
+        isActive: false,
+        maxHeight: 0,
+      }
+    },
+    {
+      title: 'content-0',
+      contents: {
+        lead: 'lead-0',
+        isActive: false,
+        maxHeight: 0,
+      }
+    },
   ];
-
-  for(var i = 0; i < items.length; i++ ){
-    items[i].isActive = false;
-    items[i].maxHeight = 0;
-  }
 
   var vueApp = new Vue({
     el: '#accordion-app',
     data: {
-      state: {
-        items: items,
-      },
+      items: items,
     },
     methods: {
       slideToggle: function(index){
-        this.state.items[index].isActive = !this.state.items[index].isActive;
-        if(this.state.items[index].isActive){
-          this.state.items[index].maxHeight = this.$refs.refElm[index].clientHeight;
+        this.items[index].contents.isActive = !this.items[index].contents.isActive;
+        if(this.items[index].contents.isActive){
+          this.items[index].contents.maxHeight = this.$refs.contentsInner[index].clientHeight;
         }else{
-          this.state.items[index].maxHeight = 0;
+          this.items[index].contents.maxHeight = 0;
         }
       },
     },
