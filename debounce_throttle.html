@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta charset="utf-8">
+<title></title>
+<meta name="description" content="">
+<meta name="author" content="">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="css/style.css">
+<link rel="shortcut icon" href="">
+</head>
+<body>
+
+
+
+<div id="vue-app">
+  <h1>Vue.jsのサンプル 静的なページ</h1>
+  <input type="text" v-model="valText">
+  <div>{{lateText}}</div>
+<!--/#vue-app--></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.4/lodash.js"></script>
+<script src="js/vue.js"></script>
+<script>
+  new Vue({
+    el: '#vue-app',
+    data: {
+      valText: '',
+      lateText: '',
+    },
+    watch: {
+      valText: _.throttle(function(){
+        console.log('changed');
+        this.lateText = this.valText;
+      }, 500)
+    }
+  });
+</script>
+
+</body>
+</html>
