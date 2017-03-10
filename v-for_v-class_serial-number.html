@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta charset="utf-8">
+<title></title>
+<meta name="description" content="">
+<meta name="author" content="">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="css/style.css">
+<link rel="shortcut icon" href="">
+</head>
+<body>
+
+
+
+<div id="vue-app">
+  <ul>
+    <li v-for="(item, index) in items" v-bind:class="['hoge-' + index]">
+      {{item}}
+    </li>
+  </ul>
+</div>
+
+<script src="js/vue.js"></script>
+<script>
+  new Vue({
+    el: '#vue-app',
+    data: {
+      items: [
+        'item-0',
+        'item-1',
+        'item-2',
+      ]
+    }
+  });
+</script>
+
+</body>
+</html>
