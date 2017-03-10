@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta charset="utf-8">
+<title></title>
+<meta name="description" content="">
+<meta name="author" content="">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="css/style.css">
+<link rel="shortcut icon" href="">
+</head>
+<body>
+
+
+
+<div id="vue-app">
+  <!--aタグ click-->
+  <a href="#hoge" v-on:click.prevent="hoge($event)">anchor</a>
+
+  <button v-on:click="hoge">hoge</button>
+  <input type="text" v-on:focus="hoge" v-on:blur="hoge">
+  <input type="checkbox" v-on:change="hoge">
+</div>
+
+<form v-on:submit.prevent="hoge($event)">
+  <input type="text" name="hoge" value="hoge">
+  <input type="submit">
+</form>
+
+<a href="./index.html">index</a>
+
+<script src="js/vue.js"></script>
+<script>
+
+  window.onload = function(){
+    alert('onload');
+  };
+
+  window.onbeforeunload = function() {
+    console.log('onbeforeunload');
+    return '';
+  };
+
+  new Vue({
+    el: '#vue-app',
+    data: {
+    },
+    methods: {
+      hoge: function(event){
+        alert(event.type);
+        // console.log(event);
+        // console.log(e.type);
+      }
+    }
+  });
+</script>
+
+</body>
+</html>
