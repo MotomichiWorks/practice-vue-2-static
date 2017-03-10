@@ -33,53 +33,39 @@
         accordion-trigger-{{index}}
       </button>
       <div class="accordion__content-outer-wrap" v-bind:style="{ maxHeight: state.items[index].maxHeight + 'px' }">
-        <my-component ref="refElm" class="accordion__content-inner-wrap" v-bind:accordion-contents="item.accordionContents" />
+        <div class="accordion__content-inner-wrap" ref="refElm">
+          {{item.accordionContents.title}}<br>
+          {{item.accordionContents.lead}}
+        </div>
       </div>
     </li>
   </ul>
 </div>
 
-<script type="text/x-template" id="accordion-contents">
-  <div>
-    {{accordionContents.title}}<br>
-    {{accordionContents.lead}}
-  </div>
-</script>
-
 <script src="js/vue.js"></script>
 <script>
-  window.items = [
+  var items = [
     {accordionContents: {title: 'content-0', lead: 'lead-0',}},
     {accordionContents: {title: 'content-1', lead: 'lead-1',}},
   ];
 
-  for(var i = 0; i < window.items.length; i++ ){
-    window.items[i].isActive = false;
-    window.items[i].maxHeight = 0;
+  for(var i = 0; i < items.length; i++ ){
+    items[i].isActive = false;
+    items[i].maxHeight = 0;
   }
 
   var vueApp = new Vue({
     el: '#accordion-app',
     data: {
       state: {
-        items: window.items,
-      },
-    },
-    components: {
-      'my-component': {
-        props: [
-          'accordionContents',
-        ],
-        template: '#accordion-contents',
+        items: items,
       },
     },
     methods: {
       slideToggle: function(index){
-        console.log(index);
-        console.log(this.$refs);
         this.state.items[index].isActive = !this.state.items[index].isActive;
         if(this.state.items[index].isActive){
-          this.state.items[index].maxHeight = this.$refs.refElm[index].$el.clientHeight;
+          this.state.items[index].maxHeight = this.$refs.refElm[index].clientHeight;
         }else{
           this.state.items[index].maxHeight = 0;
         }
