@@ -12,18 +12,51 @@
 </head>
 <body>
 
+<style>
+.fixed{
+  padding:8px 16px;
+  background:#333333;
+  position:fixed;
+  top:0;
+  left:0;
+  color: #ffffff;
+}
+</style>
+<br><br><br>
 
+<h1>Vue.jsのイベント</h1>
 
 <div id="vue-app">
-  <!--aタグ click-->
-  <a href="#hoge" v-on:click.prevent="hoge($event)">anchor</a>
+  <div class="fixed">&nbsp;{{type}}&nbsp;</div>
+  <h2>clickイベント</h2>
+  <a href="#hoge" v-on:click.prevent="hoge">anchor</a>
 
-  <button v-on:click="hoge">hoge</button>
+  <h2>focus,blurイベント</h2>
   <input type="text" v-on:focus="hoge" v-on:blur="hoge">
+
+  <h2>changeイベント</h2>
   <input type="checkbox" v-on:change="hoge">
+
+  <h2>inputイベント</h2>
+  <input type="text" v-on:input="hoge">
+
+  <h2>keydownイベント</h2>
+  <input type="text" v-on:keydown="hoge">
+
+  <h2>keyupイベント</h2>
+  <input type="text" v-on:keyup="hoge">
+
+  <h2>mouseover,mouseoutイベント</h2>
+  <a href="#" v-on:mouseover="hoge" v-on:mouseout="hoge">マウスカーソルを乗せたり、外すとイベント発火します。</a>
+
+  <h2>mouseenter,mouseleaveイベント</h2>
+  <a href="#" v-on:mouseenter="hoge" v-on:mouseleave="hoge">マウスカーソルを乗せたり、外すとイベント発火します。</a>
+
 </div>
 
-<form v-on:submit.prevent="hoge($event)">
+<br><br><br>
+<h2>submitイベント</h2>
+<form v-on:submit.prevent="hoge">
   <input type="text" name="hoge" value="hoge">
   <input type="submit">
 </form>
@@ -33,25 +66,30 @@
 <script src="js/vue.js"></script>
 <script>
 
-  window.onload = function(){
-    alert('onload');
-  };
+  // onloadイベント
+  // window.onload = function(){
+  //   alert('onload');
+  // };
 
-  window.onbeforeunload = function() {
-    console.log('onbeforeunload');
-    return '';
-  };
+  // ページを離れようとしたとき
+  // window.onbeforeunload = function() {
+  //   console.log('onbeforeunload');
+  //   return '';
+  // };
 
+  // Vue
   new Vue({
     el: '#vue-app',
     data: {
+      type: '',
     },
     methods: {
       hoge: function(event){
-        alert(event.type);
-        // console.log(event);
-        // console.log(e.type);
-      }
+        this.type = event.type;
+        if(event.type !== 'keydown'){
+          event.preventDefault();
+        }
+      },
     }
   });
 </script>
