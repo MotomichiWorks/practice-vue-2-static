@@ -27,7 +27,13 @@
 <h1>Vue.jsのイベント</h1>
 
 <div id="vue-app">
-  <div class="fixed">&nbsp;{{type}}&nbsp;</div>
+  <div class="fixed">
+    <p></p>
+    <p>
+      <span v-if="isTouchDevice">タッチ対応デバイスです。</span>
+      <span v-else>タッチ対応デバイスではありません。</span>
+    </p>
+    &nbsp;{{type}}&nbsp;</div>
   <h2>clickイベント</h2>
   <a href="#hoge" v-on:click.prevent="hoge">anchor</a>
 
@@ -46,11 +52,20 @@
   <h2>keyupイベント</h2>
   <input type="text" v-on:keyup="hoge">
 
-  <h2>mouseover,mouseoutイベント</h2>
-  <a href="#" v-on:mouseover="hoge" v-on:mouseout="hoge">マウスカーソルを乗せたり、外すとイベント発火します。</a>
+  <h2>mouseover,mouseoutイベントのトグル(PC用)</h2>
+  <span v-on:mouseover="overOutToggle" v-on:mouseout="overOutToggle">マウスカーソルを乗せたり、外すとイベント発火します。</span>
+  <div v-show="overVisible">mouseoverで表示される文字列</div>
 
-  <h2>mouseenter,mouseleaveイベント</h2>
-  <a href="#" v-on:mouseenter="hoge" v-on:mouseleave="hoge">マウスカーソルを乗せたり、外すとイベント発火します。</a>
+  <h2>mouseenter,mouseleaveイベント(PC用)</h2>
+  <span v-on:mouseenter="enterLeaveToggle" v-on:mouseleave="enterLeaveToggle">マウスカーソルを乗せたり、外すとイベント発火します。</span>
+  <div v-show="enterVisible">mouseenterで表示される文字列</div>
+
+  <h2>touchstart,touchendイベント</h2>
+  <span v-on:touchstart="hoge" v-on:touchend="hoge">touchstart,touchendイベントで発火します。</span>
+
+  <h2>touchstart,mouseleaveイベントでトグル(タッチデバイス用)</h2>
+  <span v-on:mouseenter="touchDeviceToggle" v-on:touchstart="touchDeviceToggle" v-on:mouseleave="touchDeviceToggle">touchstartでトグルして、mouseleaveで非表示になります。</span>
+  <div v-show="touchVisible">touchstartで表示される文字列</div>
 
 </div>
 
@@ -64,6 +79,8 @@
 <a href="./index.html">index</a>
 
 <script src="js/vue.js"></script>
+<script src="js/lodash.js"></script>
+
 <script>
 
   // onloadイベント
@@ -82,12 +99,57 @@
     el: '#vue-app',
     data: {
       type: '',
+      isTouchDevice: false,
+      overVisible: false,
+      enterVisible: false,
+      touchVisible: false,
+    },
+    created: function(){
+      function isTouchDevice() {
+        var result = false;
+        if (window.ontouchstart === null) {
+          return true;
+        }
+        return false;
+      }
+
+      this.isTouchDevice = isTouchDevice();
     },
     methods: {
       hoge: function(event){
         this.type = event.type;
         if(event.type !== 'keydown'){
           event.preventDefault();
+        }
+      },
+
+      overOutToggle:function(){
+        this.overVisible = !this.overVisible;
+      },
+
+      enterLeaveToggle: function(){
+        this.enterVisible = !this.enterVisible;
+      },
+
+      touchDeviceToggle: function(event){
+        this.type = event.type;
+
+        // mouseleave イベントの場合は非表示
+        if(event.type === 'mouseleave'){
+          this.touchVisible = false;
+          return;
+        }
+
+        // タッチデバイスじゃないときだけ mouseenterイベントで表示
+        if(event.type === 'mouseenter' && !this.isTouchDevice){
+          this.touchVisible = true;
+          return;
+        }
+
+        // タッチデバイスのときはtouchstartイベントでトグル
+        if(this.isTouchDevice && event.type === 'touchstart'){
+          this.touchVisible = !this.touchVisible;
+          return;
         }
       },
     }
