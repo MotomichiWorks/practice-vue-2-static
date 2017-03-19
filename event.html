@@ -67,16 +67,14 @@
   <span v-on:mouseenter="touchDeviceToggle" v-on:touchstart="touchDeviceToggle" v-on:mouseleave="touchDeviceToggle">touchstartでトグルして、mouseleaveで非表示になります。</span>
   <div v-show="touchVisible">touchstartで表示される文字列</div>
 
+  <h2>submitイベント</h2>
+  <form v-on:submit.prevent="hoge">
+    <input type="text" name="hoge" value="hoge">
+    <input type="submit">
+  </form>
 </div>
 
 <br><br><br>
-<h2>submitイベント</h2>
-<form v-on:submit.prevent="hoge">
-  <input type="text" name="hoge" value="hoge">
-  <input type="submit">
-</form>
-
-<a href="./index.html">index</a>
 
 <script src="js/vue.js"></script>
 <script src="js/lodash.js"></script>
