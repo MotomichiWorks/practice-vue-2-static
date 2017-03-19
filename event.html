@@ -15,25 +15,28 @@
 <style>
 .fixed{
   padding:8px 16px;
-  background:#333333;
+  background:#222222;
   position:fixed;
   top:0;
   left:0;
   color: #ffffff;
+  opacity: 0.9;
 }
 </style>
-<br><br><br>
+<br><br><br><br>
 
 <h1>Vue.jsのイベント</h1>
 
 <div id="vue-app">
   <div class="fixed">
-    <p></p>
+    <p>
+      &nbsp;{{type}}&nbsp;
+    </p>
     <p>
       <span v-if="isTouchDevice">タッチ対応デバイスです。</span>
       <span v-else>タッチ対応デバイスではありません。</span>
     </p>
-    &nbsp;{{type}}&nbsp;</div>
+  </div>
   <h2>clickイベント</h2>
   <a href="#hoge" v-on:click.prevent="hoge">anchor</a>
 
@@ -122,10 +125,12 @@
       },
 
       overOutToggle:function(){
+        this.type = event.type;
         this.overVisible = !this.overVisible;
       },
 
       enterLeaveToggle: function(){
+        this.type = event.type;
         this.enterVisible = !this.enterVisible;
       },
 
