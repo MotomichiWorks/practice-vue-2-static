@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta charset="utf-8">
+<title></title>
+<meta name="description" content="">
+<meta name="author" content="">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="css/style.css">
+<link rel="shortcut icon" href="">
+</head>
+<body>
+
+<style>
+.container{
+  width: 600px;
+}
+table{
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+.contents-wrap{
+  padding: 10px;
+  background: #eeeeff;
+}
+tr + tr .contents-wrap{
+  border-top: 1px solid #aaaaaa;
+}
+th,td{
+  border: 0;
+  padding: 0;
+}
+.accordion{
+  transition: max-height 2s;
+  max-height: 0;
+  overflow: hidden;
+}
+
+</style>
+
+<div id="vue-app">
+  <div class="container">
+    <table>
+
+      <tr>
+        <th>
+          <div>
+            <div class="contents-wrap">
+              ラジオボタンrow
+            </div>
+          </div>
+        </th>
+        <td>
+          <div>
+            <div class="contents-wrap">
+              <span class="controll">
+                <input type="radio" name="hoge-radio" value="true" v-model="hoge">
+                <label for="">開く</label>
+              </span>
+              <span class="controll">
+                <input type="radio" name="hoge-radio" value="false" v-model="hoge">
+                <label for="">閉じる</label>
+              </span>
+            </div>
+          </div>
+        </td>
+      </tr>
+
+      <tr>
+        <th>
+          <div class="accordion" :style="{'max-height': state.hoge.maxHeight + 'px'}">
+            <div class="contents-wrap" ref="hoge">
+              トグルrow
+            </div>
+          </div>
+        </th>
+        <td>
+          <div class="accordion" :style="{'max-height': state.hoge.maxHeight + 'px'}">
+            <div class="contents-wrap">
+              トグルコンテンツ
+            </div>
+          </div>
+        </td>
+      </tr>
+
+      <tr>
+        <th>
+          <div>
+            <div class="contents-wrap">
+              ラジオボタンrow
+            </div>
+          </div>
+        </th>
+        <td>
+          <div>
+            <div class="contents-wrap">
+              <span class="controll">
+                <input type="radio" name="foo-radio" value="true" v-model="foo">
+                <label for="">開く</label>
+              </span>
+              <span class="controll">
+                <input type="radio" name="foo-radio" value="false" v-model="foo">
+                <label for="">閉じる</label>
+              </span>
+            </div>
+          </div>
+        </td>
+      </tr>
+
+      <tr>
+        <th>
+          <div class="accordion" :style="{'max-height': state.foo.maxHeight + 'px'}">
+            <div class="contents-wrap" ref="foo">
+              トグルrow
+            </div>
+          </div>
+        </th>
+        <td>
+          <div class="accordion" :style="{'max-height': state.foo.maxHeight + 'px'}">
+            <div class="contents-wrap">
+              トグルコンテンツ
+            </div>
+          </div>
+        </td>
+      </tr>
+
+    </table>
+  </div>
+</div>
+
+<script src="js/vue.js"></script>
+<script>
+  var vueApp = new Vue({
+    el: '#vue-app',
+    data: {
+      hoge: 'false',
+      foo: 'false',
+      piyo: 'false',
+      state: {
+        hoge: {
+          isVisible: false,
+          maxHeight: 0,
+        },
+        foo: {
+          isVisible: false,
+          maxHeight: 0,
+        },
+      }
+    },
+    watch: {
+      hoge: function(val){
+        this.slideToggle('hoge', val);
+      },
+      foo: function(val){
+        this.slideToggle('foo', val);
+      },
+    },
+    methods: {
+      slideToggle: function(key, val){
+        this.state[key].isVisible = !this.state[key].isVisible;
+
+        if(this.state[key].isVisible){
+          this.state[key].maxHeight = this.$refs[key].clientHeight;
+        }else{
+          this.state[key].maxHeight = 0;
+        }
+        console.log(this.state[key]);
+      },
+    },
+  });
+</script>
+
+</body>
+</html>
