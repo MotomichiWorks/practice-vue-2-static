@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta charset="utf-8">
+<title></title>
+<meta name="description" content="">
+<meta name="author" content="">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="css/style.css">
+<link rel="shortcut icon" href="">
+</head>
+<body>
+
+<div id="vue-app">
+  <h2>シンプル</h2>
+  <input type="text" v-model="hoge">
+
+  <h2>配列</h2>
+  <input type="text" v-model="hogeArr[0]">
+  <input type="text" v-model="hogeArr[1]">
+  <input type="text" v-model="hogeArr[2]">
+
+  <h2>連想配列</h2>
+  <input type="text" v-model="hogeObj.aaa">
+  <input type="text" v-model="hogeObj.bbb">
+</div>
+
+<script src="js/vue.js"></script>
+<script>
+  new Vue({
+    el: '#vue-app',
+    data: {
+      hoge: 'str',
+      hogeArr: [
+        'arr-0',
+        'arr-1',
+        'arr-2',
+      ],
+      hogeObj: {
+        aaa: 'obj-aaa',
+        bbb: 'obj-bbb',
+      },
+    },
+    watch: {
+      hoge: function(val){
+        console.log(val);
+      },
+      hogeArr: function(val){
+        console.log(val);
+      },
+      hogeObj: {
+        handler: function(val){
+          console.log(val);
+          console.log(val.aaa);
+          console.log(val.bbb);
+        },
+        deep: true,
+      },
+    },
+  });
+</script>
+
+</body>
+</html>
