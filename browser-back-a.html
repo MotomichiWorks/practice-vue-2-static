@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta charset="utf-8">
+<title></title>
+<meta name="description" content="">
+<meta name="author" content="">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="css/style.css">
+<link rel="shortcut icon" href="">
+</head>
+<body onload="alert('body :');">
+<h1>page-a</h1>
+<div id="vue-app">
+  <form action="browser-back-b.html">
+    <input type="text" name="hoge" v-model="hoge">
+    <input type="submit" value="送信">
+  </form>
+  <button type="button" name="button" @click="foo('clicked :')">check hoge</button>
+</div>
+<a href="browser-back-b.html">page-b</a><br>
+<a href="https://www.google.co.jp/">google</a><br>
+<a href="https://www.yahoo.co.jp/">yahoo! japan</a><br>
+
+<script src="js/vue.js"></script>
+<script>
+var vm = new Vue({
+  el: '#vue-app',
+  data: {
+    hoge: 'default',
+  },
+  created: function(){
+    alert('created : ' + this.hoge);
+  },
+  mounted: function(){
+    alert('mounted : ' + this.hoge);
+  },
+  watch: {
+    hoge: function(){
+      alert('watch: ' + this.hoge);
+    }
+  },
+  methods: {
+    foo: function(arg){
+      alert(arg + this.hoge);
+    }
+  },
+});
+
+vm.foo('vm :');
+
+// window.onload = function(){
+//   vm.foo('window onload :');
+//   vm.hoge = 'default';
+// };
+
+// Firefoxでonunloadを記述すると、このページの入力値をキャッシュしなくなるので、this.hogeに設定した値がtextフィールドに表示される
+// Firefoxの場合はonunloadを書いても書かなくてもthis.hogeとフィールドのvalueにずれが生じることはなさそう
+// window.onunload = function(){};
+
+window.onpageshow = function(){
+  vm.foo('window onpageshow :');
+  console.log(event.persisted);
+};
+
+</script>
+
+</body>
+</html>
