@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta charset="utf-8">
+<title></title>
+<meta name="description" content="">
+<meta name="author" content="">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="css/style.css">
+<link rel="shortcut icon" href="">
+</head>
+<body>
+
+<style>
+.hoge-enter-active,
+.hoge-leave-active {
+  transition: opacity 2s
+}
+.hoge-enter,
+.hoge-leave-to /* hoge-leave-to クラスはバージョン 2.1.8 以降でのみ利用可能 */ {
+  opacity: 0
+}
+</style>
+
+<div id="transition-app">
+  <h1>Vue.jsのサンプル 静的なページ</h1>
+  <button v-on:click="fade">click here</button>
+  <transition
+    name="hoge"
+    v-on:before-enter="beforeEnter"
+    v-on:enter="enter"
+    v-on:after-enter="afterEnter"
+    v-on:enter-cancelled="enterCancelled"
+    v-on:before-leave="beforeLeave"
+    v-on:leave="leave"
+    v-on:after-leave="afterLeave"
+    v-on:leave-cancelled="leaveCancelled"
+  >
+    <div v-show="state.contentIsShow">トグルするコンテンツ</div>
+  </transition>
+<!--/#transition-app--></div>
+
+<script src="js/vue.js"></script>
+<script>
+  var fadeApp = new Vue({
+    el: '#transition-app',
+    data: {
+      state: {
+        contentIsShow: true,
+      },
+    },
+    methods: {
+      fade: function(){
+        this.state.contentIsShow = !this.state.contentIsShow;
+      },
+      beforeEnter: function(){
+        console.log('beforeEnter')
+      },
+      enter: function(){
+        console.log('enter')
+      },
+      afterEnter: function(){
+        console.log('afterEnter')
+      },
+      enterCancelled: function(){
+        console.log('enterCancelled')
+      },
+      beforeLeave: function(){
+        console.log('beforeLeave')
+      },
+      leave: function(){
+        console.log('leave')
+      },
+      afterLeave: function(){
+        console.log('afterLeave')
+      },
+      leaveCancelled: function(){
+        console.log('leaveCancelled')
+      },
+    },
+  });
+</script>
+
+</body>
+</html>
