@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta charset="utf-8">
+<title></title>
+<meta name="description" content="">
+<meta name="author" content="">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="css/style.css">
+<link rel="shortcut icon" href="">
+</head>
+<body>
+
+<div id="vue-app">
+  <h2>hoge</h2>
+  <div>
+    <v-message-area :messages="fields.hoge.errors" />
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.4/lodash.js"></script>
+<script src="js/vue.js"></script>
+<script>
+var vueApp = new Vue({
+  el: '#vue-app',
+  data: {
+    fooText: 'foo text です',
+    fields: {
+      hoge: {
+        errors: {
+          m1: {
+            text: 'error 1 text',
+            isVisible: true,
+          },
+          m2: {
+            text: 'error 2 text',
+            isVisible: true,
+          },
+        }
+      }
+    }
+  },
+  components: {
+    'v-message-area': {
+      props: ['messages'],
+      template: '<ul v-if="isMessagesVisible"><li v-for="message in messages">{{message.text}}</li></ul>',
+      computed: {
+        isMessagesVisible: function(){
+          var isVisible = false;
+
+          for (var key in this.messages) {
+            console.log(key);
+            if(this.messages[key].isVisible){
+              isVisible = true;
+              break;
+            }
+          }
+
+          return isVisible;
+        },
+      },
+    }
+  },
+  methods: {
+  },
+});
+</script>
+
+</body>
+</html>
