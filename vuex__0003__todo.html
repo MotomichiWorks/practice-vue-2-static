@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta charset="utf-8">
+<title></title>
+<meta name="description" content="">
+<meta name="author" content="">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="css/style.css">
+<link rel="shortcut icon" href="">
+</head>
+<body>
+
+<style>
+.is-done {
+  color: #999999;
+  text-decoration: line-through;
+}
+</style>
+
+<h1>タスク管理アプリケーション</h1>
+<div id="app">
+</div>
+
+<script src="js/lodash.js"></script>
+<script src="js/vue.js"></script>
+<script src="js/vuex.js"></script>
+<script>
+const mapState = Vuex.mapState;
+
+const store = new Vuex.Store({
+  strict: true,
+  state: {
+    latestItemId: null,
+    items: []
+  },
+  getters: {
+
+  },
+  actions: {
+    actAddItem({commit}, content) {
+      // 実際はここでAPIにリクエストしてDBのレコード追加が成功したらcommit
+      const newItemId = store.state.latestItemId + 1;
+      commit('addItem', {id: newItemId, content: content, isDone: false});
+    },
+    actToggleItem({commit}, id) {
+      // 実際はここでAPIにリクエストしてDBの選択されたレコードの更新が成功したらcommit
+      const index = _.findIndex(store.state.items, function(o) { return o.id == id; });
+      commit('toggleItem', index);
+    },
+    actDeleteItem({commit}, id) {
+      // 実際はここでAPIにリクエストしてDBの選択されたレコードの削除が成功したらcommit
+
+      commit('deleteItem', id);
+    },
+    actGetItems({commit}) {
+      // 実際はここでAPIにリクエストしてDBからタスクリストを取得します
+      const items = [
+        {id: 0, content: '起きる', isDone: false},
+        {id: 1, content: '朝食を食う', isDone: false},
+        {id: 2, content: '昼食を食う', isDone: true},
+        {id: 4, content: '夕食を食う', isDone: true},
+        {id: 5, content: '風呂に入る', isDone: false},
+        {id: 10, content: '寝る', isDone: false},
+      ];
+      const latestItemId = items[items.length - 1].id;
+      commit('getItems', {latestItemId: latestItemId, items: items});
+    }
+  },
+  mutations: {
+  	addItem(state, newItem) {
+      console.log('追加されます');
+      state.latestItemId = newItem.id;
+      state.items.push(newItem);
+    },
+    toggleItem(state, index) {
+      console.log('完了<=>未完了が変更されます');
+      state.items[index].isDone = !state.items[index].isDone;
+    },
+    deleteItem(state, id) {
+      console.log('削除commitします');
+      state.items = _.filter(state.items, function(item) {
+        return item.id !== id;
+      });
+    },
+    getItems(state, newState) {
+      _.assign(state, newState);
+    }
+  }
+});
+
+const addItem = {
+  data() {
+    return {
+      content: '',
+    }
+  },
+  template: `
+    <section>
+      <h2>タスクを新しく追加</h2>
+      <div>
+        <input type="text" v-model="content">
+        <input type="submit" value="追加" @click="addItem">
+      </div>
+    </section>
+  `,
+  methods: {
+    addItem() {
+      if (!this.content) return;
+      store.dispatch('actAddItem', this.content);
+      this.content = '';
+    }
+  }
+};
+
+const item = {
+  props: ['item'],
+  template: `
+    <li>
+      <span :class="{'is-done': isDone}">id {{item.id}} : {{item.content}}</span>
+      <button @click="toggleItem" v-text="buttonLabel"></button>
+      <button @click="deleteItem">削除する</button>
+    </li>
+  `,
+  updated() {
+    console.log('以下のように変更されました')
+    console.log(this.item);
+  },
+  computed: {
+    id() {
+      return this.item.id;
+    },
+    isDone() {
+      return this.item.isDone;
+    },
+    buttonLabel() {
+      return this.item.isDone ? '未完了に戻す' : '完了にする';
+    },
+  },
+  methods: {
+    toggleItem() {
+      store.dispatch('actToggleItem', this.id);
+    },
+    deleteItem() {
+      if (!confirm("削除しますか？")) return;
+      store.dispatch('actDeleteItem', this.id);
+    },
+  }
+};
+
+const itemList = {
+  components: {item},
+  template: `
+    <section>
+      <h2>登録されているタスク</h2>
+      <ul>
+        <item v-for="item in items" v-bind:item="item"></item>
+      </ul>
+    </section>
+  `,
+  computed: {
+    items: () => store.state.items
+  },
+  updated() {
+    console.log('以下のように変更されました')
+    console.log(store.state.items);
+  },
+  created() {
+    store.dispatch('actGetItems');
+  }
+};
+
+const app = new Vue({
+  el: '#app',
+  store,
+  components: {
+    addItem,
+    itemList,
+  },
+  template: `
+    <div class="app">
+      <add-item />
+      <item-list />
+    </div>
+  `
+});
+</script>
+
+</body>
+</html>
