@@ -13,17 +13,13 @@
 <body>
 
 <div id="app">
-  <p>{{ count }}</p>
-  <p>
-    <button @click="increment">+</button>
-    <button @click="decrement">-</button>
-  </p>
 </div>
 
 <script src="js/vue.js"></script>
 <script src="js/vuex.js"></script>
-
 <script>
+const mapState = Vuex.mapState;
+
 const store = new Vuex.Store({
   state: {
     count: 0
@@ -39,10 +35,29 @@ const store = new Vuex.Store({
 });
 
 const Counter = {
-  template: `<div>{{ count }}</div>`,
-  computed: {
-    count () {
-      return this.$store.state.count
+  template: `
+    <div>
+      <div>{{ count }}</div>
+      <button @click="increment">+</button>
+      <button @click="decrement">-</button>
+    </div>
+  `,
+  computed: mapState({
+    // アロー関数は、コードをとても簡潔にできます！
+    count: state => state.count,
+    // 文字列を渡すことは、`state => state.count` と同じです
+    countAlias: 'count',
+    // `this` からローカルステートを参照するときは、通常の関数を使わなければいけません
+    countPlusLocalState (state) {
+      return state.count + this.localCount
+    }
+  }),
+  methods: {
+    increment () {
+      store.commit('increment')
+    },
+    decrement () {
+    	store.commit('decrement')
     }
   }
 }
@@ -58,30 +73,6 @@ const app = new Vue({
     </div>
   `
 })
-
-
-
-
-
-
-
-
-// const app = new Vue({
-//   el: '#app',
-//   computed: {
-//     count: function(){
-// 	    return store.state.count;
-//     }
-//   },
-//   methods: {
-//     increment: function(){
-//       store.commit('increment');
-//     },
-//     decrement: function(){
-//     	store.commit('decrement');
-//     }
-//   }
-// });
 </script>
 
 </body>
