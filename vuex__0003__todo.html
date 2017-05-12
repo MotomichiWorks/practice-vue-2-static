@@ -108,7 +108,7 @@ const addItem = {
   methods: {
     addItem() {
       if (!this.content) return;
-      store.dispatch('actAddItem', this.content);
+      this.$store.dispatch('actAddItem', this.content);
       this.content = '';
     }
   }
@@ -140,11 +140,11 @@ const item = {
   },
   methods: {
     toggleItem() {
-      store.dispatch('actToggleItem', this.id);
+      this.$store.dispatch('actToggleItem', this.id);
     },
     deleteItem() {
       if (!confirm("削除しますか？")) return;
-      store.dispatch('actDeleteItem', this.id);
+      this.$store.dispatch('actDeleteItem', this.id);
     },
   }
 };
@@ -160,14 +160,16 @@ const itemList = {
     </section>
   `,
   computed: {
-    items: () => store.state.items
+    items() {
+      return this.$store.state.items;
+    }
   },
   updated() {
     console.log('以下のように変更されました')
-    console.log(store.state.items);
+    console.log(this.$store.state.items);
   },
   created() {
-    store.dispatch('actGetItems');
+    this.$store.dispatch('actGetItems');
   }
 };
 
