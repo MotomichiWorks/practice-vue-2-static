@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta charset="utf-8">
+<title></title>
+<meta name="description" content="">
+<meta name="author" content="">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="css/style.css">
+<link rel="shortcut icon" href="">
+</head>
+<body>
+
+<div id="app">
+  <p>{{ count }}</p>
+  <p>
+    <button @click="increment">+</button>
+    <button @click="decrement">-</button>
+  </p>
+</div>
+
+<script src="js/vue.js"></script>
+<script src="js/vuex.js"></script>
+
+<script>
+const store = new Vuex.Store({
+  state: {
+    count: 0
+  },
+  mutations: {
+  	increment: function(state){
+      return state.count++;
+    },
+    decrement: function(state){
+      return state.count--;
+    }
+  }
+});
+
+const Counter = {
+  template: `<div>{{ count }}</div>`,
+  computed: {
+    count () {
+      return this.$store.state.count
+    }
+  }
+}
+
+const app = new Vue({
+  el: '#app',
+  // "store" オプションで指定されたストアは、全ての子コンポーネントに注入されます
+  store,
+  components: { Counter },
+  template: `
+    <div class="app">
+      <counter></counter>
+    </div>
+  `
+})
+
+
+
+
+
+
+
+
+// const app = new Vue({
+//   el: '#app',
+//   computed: {
+//     count: function(){
+// 	    return store.state.count;
+//     }
+//   },
+//   methods: {
+//     increment: function(){
+//       store.commit('increment');
+//     },
+//     decrement: function(){
+//     	store.commit('decrement');
+//     }
+//   }
+// });
+</script>
+
+</body>
+</html>
