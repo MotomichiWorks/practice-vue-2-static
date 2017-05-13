@@ -39,14 +39,14 @@ const store = new Vuex.Store({
 
   },
   actions: {
-    actAddItem({commit}, content) {
+    actAddItem({commit, rootState}, content) {
       // 実際はここでAPIにリクエストしてDBのレコード追加が成功したらcommit
-      const newItemId = store.state.latestItemId + 1;
+      const newItemId = rootState.latestItemId + 1;
       commit('addItem', {id: newItemId, content: content, isDone: false});
     },
-    actToggleItem({commit}, id) {
+    actToggleItem({commit, rootState}, id) {
       // 実際はここでAPIにリクエストしてDBの選択されたレコードの更新が成功したらcommit
-      const index = _.findIndex(store.state.items, function(o) { return o.id == id; });
+      const index = _.findIndex(rootState.items, function(o) { return o.id == id; });
       commit('toggleItem', index);
     },
     actDeleteItem({commit}, id) {
