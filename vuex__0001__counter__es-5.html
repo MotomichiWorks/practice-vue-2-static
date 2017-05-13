@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta charset="utf-8">
+<title></title>
+<meta name="description" content="">
+<meta name="author" content="">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="css/style.css">
+<link rel="shortcut icon" href="">
+</head>
+<body>
+
+<div id="app">
+  <p>{{ count }}</p>
+  <p>
+    <button @click="increment">+</button>
+    <button @click="decrement">-</button>
+  </p>
+</div>
+
+<script src="js/vue.js"></script>
+<script src="js/vuex.js"></script>
+
+<script>
+const store = new Vuex.Store({
+  strict: true,
+  state: {
+    count: 0
+  },
+  mutations: {
+  	increment: function(state){
+      return state.count++;
+    },
+    decrement: function(state){
+      return state.count--;
+    }
+  }
+});
+
+const app = new Vue({
+  el: '#app',
+  computed: {
+    count: function(){
+	    return this.$store.state.count;
+    }
+  },
+  methods: {
+    increment: function({commit}){
+      commit('increment');
+    },
+    decrement: function({commit}){
+    	commit('decrement');
+    }
+  }
+});
+</script>
+
+</body>
+</html>
