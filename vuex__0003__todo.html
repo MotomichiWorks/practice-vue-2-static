@@ -69,17 +69,14 @@ const store = new Vuex.Store({
     }
   },
   mutations: {
-  	addItem(state, newItem) {
-      console.log('追加されます');
+    addItem(state, newItem) {
       state.latestItemId = newItem.id;
       state.items.push(newItem);
     },
     toggleItem(state, index) {
-      console.log('完了<=>未完了が変更されます');
       state.items[index].isDone = !state.items[index].isDone;
     },
     deleteItem(state, id) {
-      console.log('削除commitします');
       state.items = _.filter(state.items, function(item) {
         return item.id !== id;
       });
@@ -123,10 +120,6 @@ const item = {
       <button @click="deleteItem">削除する</button>
     </li>
   `,
-  updated() {
-    console.log('以下のように変更されました')
-    console.log(this.item);
-  },
   computed: {
     id() {
       return this.item.id;
@@ -163,10 +156,6 @@ const itemList = {
     items() {
       return this.$store.state.items;
     }
-  },
-  updated() {
-    console.log('以下のように変更されました')
-    console.log(this.$store.state.items);
   },
   created() {
     this.$store.dispatch('actGetItems');
