@@ -27,6 +27,9 @@
 <script src="js/vue.js"></script>
 <script src="js/vuex.js"></script>
 <script>
+/**
+ * store
+ */
 const store = new Vuex.Store({
   strict: true,
   state: {
@@ -49,7 +52,6 @@ const store = new Vuex.Store({
     },
     actDeleteItem({commit}, id) {
       // 実際はここでAPIにリクエストしてDBの選択されたレコードの削除が成功したらcommit
-
       commit('deleteItem', id);
     },
     actGetItems({commit}) {
@@ -85,6 +87,14 @@ const store = new Vuex.Store({
   }
 });
 
+
+
+
+
+/**
+ * addItem
+ * タスク新規追加フィールドのコンポーネント
+ */
 const addItem = {
   data() {
     return {
@@ -109,6 +119,14 @@ const addItem = {
   }
 };
 
+
+
+
+
+/**
+ * item
+ * タスク一つ分のliタグのコンポーネント
+ */
 const item = {
   props: ['item'],
   template: `
@@ -140,6 +158,14 @@ const item = {
   }
 };
 
+
+
+
+
+/**
+ * itemList
+ * タスク一覧のulタグのコンポーネント
+ */
 const itemList = {
   components: {item},
   template: `
@@ -160,6 +186,14 @@ const itemList = {
   }
 };
 
+
+
+
+
+/**
+ * app
+ * rootのコンポーネント
+ */
 const app = new Vue({
   el: '#app',
   store,
