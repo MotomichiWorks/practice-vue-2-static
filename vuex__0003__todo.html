@@ -40,21 +40,21 @@ const store = new Vuex.Store({
 
   },
   actions: {
-    actAddItem({commit, rootState}, content) {
+    addItem({commit, rootState}, content) {
       // 実際はここでAPIにリクエストしてDBのレコード追加が成功したらcommit
       const newItemId = rootState.latestItemId + 1;
       commit('addItem', {id: newItemId, content: content, isDone: false});
     },
-    actToggleItem({commit, rootState}, id) {
+    toggleItem({commit, rootState}, id) {
       // 実際はここでAPIにリクエストしてDBの選択されたレコードの更新が成功したらcommit
       const index = _.findIndex(rootState.items, function(o) { return o.id == id; });
       commit('toggleItem', index);
     },
-    actDeleteItem({commit}, id) {
+    deleteItem({commit}, id) {
       // 実際はここでAPIにリクエストしてDBの選択されたレコードの削除が成功したらcommit
       commit('deleteItem', id);
     },
-    actGetItems({commit}) {
+    getItems({commit}) {
       // 実際はここでAPIにリクエストしてDBからタスクリストを取得します
       const items = [
         {id: 0, content: '起きる', isDone: false},
@@ -113,7 +113,7 @@ const addItem = {
   methods: {
     addItem() {
       if (!this.content) return;
-      this.$store.dispatch('actAddItem', this.content);
+      this.$store.dispatch('addItem', this.content);
       this.content = '';
     }
   }
@@ -149,11 +149,11 @@ const item = {
   },
   methods: {
     toggleItem() {
-      this.$store.dispatch('actToggleItem', this.id);
+      this.$store.dispatch('toggleItem', this.id);
     },
     deleteItem() {
       if (!confirm("削除しますか？")) return;
-      this.$store.dispatch('actDeleteItem', this.id);
+      this.$store.dispatch('deleteItem', this.id);
     },
   }
 };
@@ -182,7 +182,7 @@ const itemList = {
     }
   },
   created() {
-    this.$store.dispatch('actGetItems');
+    this.$store.dispatch('getItems');
   }
 };
 
