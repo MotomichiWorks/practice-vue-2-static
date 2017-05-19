@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta charset="utf-8">
+<title></title>
+<meta name="description" content="">
+<meta name="author" content="">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="css/style.css">
+<link rel="shortcut icon" href="">
+</head>
+<body>
+
+<div id="app">
+</div>
+
+<script src="js/vue.js"></script>
+<script src="js/vuex.js"></script>
+<script>
+const mapGetters = Vuex.mapGetters;
+
+/**
+ * Store
+ */
+const moduleA = {
+  strict: true,
+  state: {
+    count: 0
+  },
+  mutations: {
+    incrementA: state => state.count++ ,
+    decrementA: state => state.count-- ,
+  },
+  getters: {
+    moduleAState: state => state ,
+  }
+};
+
+const store = new Vuex.Store({
+  strict: true,
+  modules: {
+    a: moduleA,
+  },
+})
+
+/**
+ * RootComponent
+ */
+const RootComponent = {
+  template: `
+    <div>
+      <div>mapState使用 : {{ moduleAState.count }}</div>
+      <div>this.$state.getters.moduleAStateの方 : {{ count }}</div>
+      <button @click="increment">+</button>
+      <button @click="decrement">-</button>
+    </div>
+  `,
+  methods: {
+    increment() {
+      this.$store.commit('incrementA')
+    },
+    decrement() {
+    	this.$store.commit('decrementA')
+    }
+  },
+  computed: Object.assign(mapGetters([
+      'moduleAState',
+    ]),
+    {
+      count() {
+        return this.$store.getters.moduleAState.count;
+      }
+    }
+  ),
+  created() {
+    console.log('this.moduleAState.count : ' + this.moduleAState.count);
+  }
+};
+
+/**
+ * VueModel
+ */
+const app = new Vue({
+  el: '#app',
+  store,
+  components: { RootComponent },
+  template: `
+    <div class="app">
+      <root-component />
+    </div>
+  `,
+});
+
+</script>
+
+</body>
+</html>
