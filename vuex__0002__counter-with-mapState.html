@@ -54,17 +54,16 @@ const Counter = {
   }),
   methods: {
     increment () {
-      store.commit('increment')
+      this.$store.commit('increment')
     },
     decrement () {
-    	store.commit('decrement')
+    	this.$store.commit('decrement')
     }
   }
-}
+};
 
 const app = new Vue({
   el: '#app',
-  // "store" オプションで指定されたストアは、全ての子コンポーネントに注入されます
   store,
   components: { Counter },
   template: `
@@ -72,7 +71,7 @@ const app = new Vue({
       <counter></counter>
     </div>
   `
-})
+});
 </script>
 
 </body>
