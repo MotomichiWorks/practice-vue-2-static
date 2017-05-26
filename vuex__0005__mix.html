@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta charset="utf-8">
+<title></title>
+<meta name="description" content="">
+<meta name="author" content="">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="css/style.css">
+<link rel="shortcut icon" href="">
+</head>
+<body>
+
+<div id="app">
+  <div>
+    {{otherComputedProperty}}
+  </div>
+  <div>
+    <counter :namespace="'firstCounter'" />
+  </div>
+  <div>
+    <counter :namespace="'secondCounter'" />
+  </div>
+</div>
+
+
+
+<script src="js/lodash.js"></script>
+<script src="js/vue.js"></script>
+<script src="js/vuex.js"></script>
+<script>
+const components = {};
+const store = new Vuex.Store({
+  strict: true,
+});
+
+
+
+/**
+ * counter
+ */
+(function(){
+  const counter = {
+    strict: true,
+    namespaced: true,
+    state(){
+      return {
+        count: 0
+      }
+    },
+    mutations: {
+      increment: state => state.count++ ,
+      decrement: state => state.count-- ,
+    },
+    getters: {
+      counterState: state => state ,
+    }
+  };
+
+  store.registerModule('firstCounter', counter);
+  store.registerModule('secondCounter', counter);
+
+  components.counter = {
+    props: ['namespace'],
+    template: `
+      <div>
+        <div>{{counterState}}</div>
+        <button @click="increment">+</button>
+        <button @click="decrement">-</button>
+      </div>
+    `,
+    methods: {
+      increment() {
+        this.$store.commit(this.namespace + '/increment');
+      },
+      decrement() {
+        this.$store.commit(this.namespace + '/decrement');
+      }
+    },
+    computed: {
+      counterState() {
+        return this.$store.getters[this.namespace + '/counterState'];
+      }
+    },
+  };
+
+})();
+
+
+
+
+/**
+ * VueModel
+ */
+const app = new Vue({
+  el: '#app',
+  store,
+  components,
+  computed: {
+    otherComputedProperty() {
+      // 何か処理
+      return 'もともとあったcomputedプロパティ'
+    },
+  }
+});
+</script>
+
+</body>
+</html>
